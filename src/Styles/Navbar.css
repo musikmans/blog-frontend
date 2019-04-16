@@ -1,0 +1,50 @@
+.logo-bw img {
+    width:80vw;
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+.navbar {
+    top: 0px;
+    min-height: 80px;
+    position: fixed;
+}
+
+.navbar-custom {
+    background-color: #132a44;
+}
+.navbar-brand {
+    padding: 15px, 5px;
+    height: 80px;
+    line-height: 80px;
+}
+.navbar-toggle {
+    /* (80px - button height 34px) / 2 = 23px */
+    margin-top: 23px;
+    padding: 9px 10px !important;
+  }
+
+.navbar-brand img {
+    margin-top: -8px;
+    width:350px;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,1);
+    font-size: 20px;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #f89011;
+    font-size: 20px;
+}
+
+.hamburger {
+    font-size:36px;
+}
