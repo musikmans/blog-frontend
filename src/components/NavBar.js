@@ -17,14 +17,14 @@ const NavBar = props => {
 
     <div className="collapse navbar-collapse" id="navbarSupportedContent1">
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item" id="toplink">
-        <NavLink to="/">Home</NavLink> |&nbsp;
+        <li className="nav-item">
+        <NavLink to="/" className="menulink" activeClassName="menulink-active" exact path="/">Home</NavLink><span className="menuseperator">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
         </li>
-        <li className="nav-item" id="aboutlink">
-        <NavLink to="/login">Login</NavLink> |&nbsp;
+        <li className="nav-item">
+        <NavLink to="/login" className="menulink" activeClassName="menulink-active">Login</NavLink><span className="menuseperator">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
         </li>
-        <li className="nav-item" id="techlink">
-        <NavLink to="/register">Register</NavLink>
+        <li className="nav-item">
+        <NavLink to="/register" className="menulink" activeClassName="menulink-active">Register</NavLink>
         </li>
       </ul>
     </div>
