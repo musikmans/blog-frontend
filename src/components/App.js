@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import Articles from './Articles';
 import Login from './Login';
 import Register from './Register';
+import Confirmation from './Confirmation';
 import { User, Session } from '../requests';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Cookies from 'universal-cookie';
@@ -59,6 +60,7 @@ class App extends Component {
           ) : (
               <Switch>
               <Route path="/" exact component={Articles} />
+              <Route path="/confirmation" exact component={Confirmation} />
               {currentUser ? (
                 <>
                   <span>👩‍💻 {currentUser.name}</span>
@@ -74,7 +76,12 @@ class App extends Component {
                   <Login {...routeProps} action={this.getCurrentUser} />
                 )}
               />
-                <Route path = "/register" exact component = {Register} />
+                <Route
+                path="/register"
+                render={routeProps => (
+                  <Register {...routeProps} action={this.getCurrentUser} />
+                )}
+              />
                 </>
               )}
               

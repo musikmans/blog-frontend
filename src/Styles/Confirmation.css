@@ -1,0 +1,29 @@
+.confirmationPage {
+    padding-top: 110px;
+    margin-left: 10px;
+}
+
+:root {
+    --input-padding-x: 1.5rem;
+    --input-padding-y: .75rem;
+  }
+  
+  .card-signin {
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-signin .card-title {
+    margin-bottom: 2rem;
+    font-weight: 300;
+    font-size: 1.5rem;
+  }
+  
+  .card-text {
+      background-color:	lightgreen;
+      color: black;
+      border: 1px solid green;
+      border-radius: 10px;
+      padding: 10px;
+  }

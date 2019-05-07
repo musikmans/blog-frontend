@@ -50,7 +50,7 @@ const NavBar = props => {
         <li className="nav-item">
         {currentUser ? (
         <>
-          <a href="#not-used" onClick={handleSignOutClick} className="menulink" activeClassName="menulink-active">
+          <a href="#not-used" onClick={handleSignOutClick} className="menulink">
             Logout
           </a>
         </>
