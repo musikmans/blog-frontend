@@ -4,8 +4,9 @@ import NavBar from './NavBar';
 import Articles from './Articles';
 import Login from './Login';
 import Register from './Register';
-import { Session, User } from '../requests';
+import { User, Session } from '../requests';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 class App extends Component {
   constructor(props) {
@@ -19,24 +20,29 @@ class App extends Component {
     this.getCurrentUser = this.getCurrentUser.bind(this);
     this.destroySession = this.destroySession.bind(this);
   }
-
   destroySession() {
     this.setState({
-      currentUser: null
+      currentUser: null,
+      loggedIn: false
     });
 
     Session.destroy();
   }
 
   getCurrentUser() {
+    const cookies = new Cookies();
+    const key = cookies.get('Authorization');
+    if (typeof(key) !== 'undefined' || key != null) {
     User.current().then(data => {
-      const { current_user: currentUser } = data;
-
+      const currentUser = data;
       if (currentUser) {
         this.setState({ currentUser });
+        this.setState({ loading: false });
       }
-      this.setState({ loading: false });
     });
+    } else {
+      this.setState({ loading: false });
+    }
   }
 
   componentDidMount() {
@@ -45,10 +51,12 @@ class App extends Component {
 
     render() {
       const { currentUser, loading } = this.state;
-
         return ( <BrowserRouter>
             <div>
               <NavBar currentUser={currentUser} onSignOut={this.destroySession} />
+              {loading ? (
+            <main>{/* <h1>Loading...</h1> */}</main>
+          ) : (
               <Switch>
               <Route path="/" exact component={Articles} />
               {currentUser ? (
@@ -60,12 +68,18 @@ class App extends Component {
                 </>
               ) : (
                 <>
-                <Route path = "/login" exact component = {Login} /> 
+                <Route
+                path="/login"
+                render={routeProps => (
+                  <Login {...routeProps} action={this.getCurrentUser} />
+                )}
+              />
                 <Route path = "/register" exact component = {Register} />
                 </>
               )}
               
               </Switch>
+          )}
             </div>
           </BrowserRouter>
         );

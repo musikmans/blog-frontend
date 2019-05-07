@@ -1,47 +1,58 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import { Session } from "../requests";
+import Cookies from 'universal-cookie';
+
 import "../Styles/Login.css";
 
+const BASE_URL = `http://localhost:8000/api`;
+
 class Login extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.state = {
-          errors: []
-        };
-    
-        this.createSession = this.createSession.bind(this);
+  constructor(props) {
+    super(props)
+    this.state = {
+      email : '',
+      password: ''
+    };
+  }
+
+  handleInputChange = (event) => {
+    const { value, name } = event.target;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    fetch(`${BASE_URL}/login`, {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
-    
-      createSession(event) {
-        event.preventDefault();
-        const { currentTarget } = event;
-        const formData = new FormData(currentTarget);
-    
-        Session.create({
-          email: formData.get("email"),
-          password: formData.get("password"),
-        }).then(data => {
-          const { onSignIn = () => {} } = this.props;
-    
-          if (typeof data.id === "number") {
-            this.props.history.push("/");
-    
-            onSignIn();
-          } else {
-            this.setState({ errors: [{ message: "Wrong email or password!" }] });
-          }
-          // The `history` prop is passed to components rendenred by the
-          // <Route> component. This `history` allows us to manipulate
-          // the history of the browser including simulating redirects,
-          // pressing back or forward, etc.
+    })
+    .then(res => {
+      const cookies = new Cookies();
+      if (res.status === 200) {
+        const { action = () => {} } = this.props;
+        res.json().then(content => {
+          cookies.set('Authorization', content.api_token, { path: '/' });
+          action();
         });
+        this.props.history.push('/');
+      } else {
+        const error = new Error(res.error);
+        throw error;
       }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error logging in please try again');
+    });
+  }
 
     render() {
-        const { errors } = this.state;
-
         return ( <main className="loginPage">
         <div className="container">
             <div className="row">
@@ -49,19 +60,16 @@ class Login extends Component {
                 <div className="card card-signin my-5">
                 <div className="card-body">
                     <h1 className="card-title text-center">Login</h1>
-                    <form className="form-signin" onSubmit={this.createSession}>
-                    {errors.length > 0 ? (
-                        <div className="FormErrors">
-                        {errors.map(e => e.message).join(", ")}
-                        </div>
-                    ) : null}
+                    <form className="form-signin" onSubmit={this.onSubmit}>
                     <div className="form-label-group">
-                        <input type="email" id="email" name="email" className="form-control" placeholder="Email address" required autoFocus />
+                        <input type="email" id="email" name="email" className="form-control" placeholder="Email address" value={this.state.email}
+          onChange={this.handleInputChange} required autoFocus />
                         <label htmlFor="email">Email address</label>
                     </div>
                     <br />
                     <div className="form-label-group">
-                        <input type="password" id="password" name="password" className="form-control" placeholder="Password" required />
+                        <input type="password" id="password" name="password" className="form-control" placeholder="Password" value={this.state.password}
+          onChange={this.handleInputChange} required />
                         <label htmlFor="password">Password</label>
                     </div>
                     <br />
