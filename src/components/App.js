@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "../Styles/App.css";
 import NavBar from './NavBar';
+import AuthRoute from "./AuthRoute";
 import Articles from './Articles';
+import Posts from './Posts';
 import Login from './Login';
 import Register from './Register';
 import Confirmation from './Confirmation';
@@ -61,6 +63,11 @@ class App extends Component {
               <Switch>
               <Route path="/" exact component={Articles} />
               <Route path="/confirmation" exact component={Confirmation} />
+              <AuthRoute
+                isAuth={currentUser}
+                path="/posts"
+                component={Posts}
+              />
               {currentUser ? (
                 <>
                   <span>👩‍💻 {currentUser.name}</span>
